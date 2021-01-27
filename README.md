@@ -1,5 +1,5 @@
 # mobile-video-project
-为金冉做的手机端视频课程项目
+涓洪噾鍐夊仛鐨勬墜鏈虹瑙嗛璇剧▼椤圭洰1
 
 # test
 
@@ -30,3 +30,4 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
