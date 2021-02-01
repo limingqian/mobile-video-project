@@ -1,6 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+// import Home from '../views/Home.vue';
+import { isLogin } from "./../utils/auth";
+// check,
+import Forbidden from "./../views/403"; // 非异步加载
+// import findLast from "lodash/findLast";
 
 Vue.use(VueRouter);
 
@@ -8,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
   },
   {
     path: "/list",
@@ -21,7 +25,19 @@ const routes = [
   {
     path: "/mine",
     name: "Mine",
-    component: () => import(/* webpackChunkName: "list" */ "../views/Mine.vue")
+    component: () => import(/* webpackChunkName: "mine" */ "../views/Mine.vue")
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue")
+  },
+  {
+    path: "/403",
+    name: "403",
+    hideInMenu: true,
+    component: Forbidden
   }
 ];
 
@@ -29,6 +45,15 @@ const router = new VueRouter({
   // mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  if (!isLogin() && to.name !== "Login") {
+    next({
+      name: "Login"
+    });
+  } else next();
 });
 
 export default router;

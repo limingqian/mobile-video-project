@@ -11,6 +11,7 @@ import { Tabbar, TabbarItem } from 'vant';
 import { NavBar } from 'vant';
 import { Field } from 'vant';
 import { Cell, CellGroup } from 'vant';
+import { Form } from 'vant';
 
 Vue.config.productionTip = false;
 
@@ -27,7 +28,7 @@ Vue.use(NavBar);
 Vue.use(Field);
 Vue.use(Cell);
 Vue.use(CellGroup);
-
+Vue.use(Form);
 
 new Vue({
   router,

@@ -14,7 +14,7 @@
       <van-button style="width:80%;" type="info">设置</van-button>
       <br />
       <br />
-      <van-button style="width:80%;" type="warning">退出</van-button>
+      <van-button style="width:80%;" type="warning" @click="logout">退出</van-button>
     </div>
 
     <!-- 个人信息 -->
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import storage from "../utils/storage";
 export default {
   name: 'Mine',
   components: {},
@@ -37,9 +38,10 @@ export default {
     };
   },
   methods: {
-    // readMore() {
-    //   this.$router.push('/');
-    // }
+    logout() {
+      storage.clear();
+      this.$router.push("/login");
+    }
   }
 };
 </script>
