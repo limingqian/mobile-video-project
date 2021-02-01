@@ -1,13 +1,36 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
+    </div> -->
     <router-view />
+    <van-tabbar v-model="active" @change="changeTab">
+      <van-tabbar-item icon="home-o" replace to="/">首页</van-tabbar-item>
+      <van-tabbar-item icon="search" replace to="/list">热门课程</van-tabbar-item>
+      <van-tabbar-item icon="friends-o" replace to="/mine">我的</van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
-
+<script>
+export default {
+  name: 'App',
+  data() {
+    return {
+      active: 0
+    };
+  },
+  methods: {
+    changeTab(a) {
+      console.log('++++++++++')
+      console.log(a)
+      console.log('++++++++++')
+      
+      // this.$router.push('/list')
+    }
+  }
+};
+</script>
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
