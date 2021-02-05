@@ -5,7 +5,6 @@
       <van-grid-item icon="photo-o" text="我的收藏" />
       <van-grid-item icon="photo-o" text="我的课程" />
     </van-grid>
-    <h1>This is an mine page</h1>
     <!-- 功能按钮 -->
     <div class="operation">
       <!-- <van-cell-group style="text-align:left">

@@ -110,6 +110,7 @@ button {
   border-radius: 6rem;
   transition: 0.3s linear;
   float: right;
+  transform: translateX(-3%);
 }
 
 .bar button {
