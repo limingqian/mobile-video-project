@@ -126,7 +126,7 @@ export default {
 .item {
   width: 42vw;
   height: 20vh;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   flex: 0 0 48%;
   margin-left: 2.5vw;
   margin-bottom: 2vw;

@@ -33,8 +33,8 @@
         fit="cover"
         src="https://img01.yzcdn.cn/vant/cat.jpeg"
       />
-      <h4>123123123123123</h4>
-      <h6>{{ sign }}</h6>
+      <h4 class="sign">123123123123123</h4>
+      <h6 class="sign">{{ sign }}</h6>
     </div>
   </div>
 </template>
@@ -73,5 +73,9 @@ export default {
   right: 0;
   /* margin: auto; */
   bottom: 5.5rem;
+}
+
+.sign {
+  color: white;
 }
 </style>

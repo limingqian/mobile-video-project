@@ -14,32 +14,61 @@
     <van-tabs v-model="active">
       <van-tab title="介绍">
         <div class="content">
-          <div class="buffer" style="font-size:1.2rem;">VR全景制作</div>
-          <div style="margin-left:1rem; font-size:0.6rem;">3人学习 / 0 评论</div>
+          <div class="buffer" style="font-size:1.2rem;">
+            {{ introduction.title }}
+          </div>
+          <div style="margin-left:1rem; font-size:0.6rem;">
+            {{ introduction.subTitle }}
+          </div>
         </div>
         <div style="text-align:left; margin:1rem 0.5rem 1rem 1rem;">
-          有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建
-          Router 实例的时候，在 routes 配置中给某个路由设置名称
+          {{ introduction.content }}
         </div>
         <div class="line"></div>
         <div class="teacher">
-          <div class="buffer" style="text-align:left;font-size:1.2rem;">讲师</div>
+          <div class="buffer" style="text-align:left;font-size:1.2rem;">
+            讲师
+          </div>
           <div class="text-container">
             <van-image class="buffer" round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
             <div class="text">
-              <div style="font-size:1.2rem;">李老师</div>
-              <div style="color:#00A2e0;">首席虚拟现实讲师</div>
+              <div style="font-size:1.2rem;">{{ teacher.name }}</div>
+              <div style="color:#00A2e0;">{{ teacher.position }}</div>
               <div style="text-align:left;margin-top:1rem;margin-bottom:4rem;">
-                有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建
-                Router 实例的时候，在 routes 配置中给某个路由设置名称
+                {{ teacher.introduction }}
               </div>
             </div>
           </div>
-          111
         </div>
       </van-tab>
-      <van-tab title="评价">内容 2</van-tab>
-      <van-tab title="学过此课">内容 3</van-tab>
+      <van-tab title="评价">
+        <div v-for="item in items" :key="item.id">
+          <!-- 评价组件 -->
+          <div class="comment-container">
+            <van-image class="buffer" round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+            <div class="comment-text">
+              <div style="text-align:left;margin-top:1rem;">
+                {{ item.name }}
+                <span style="font-size:0.8rem;margin-left:1rem;">
+                  {{ item.time }}
+                </span>
+              </div>
+              <van-field v-model="item.content" readonly autosize type="textarea" />
+            </div>
+          </div>
+          <div class="line"></div>
+        </div>
+      </van-tab>
+      <van-tab title="学过此课">
+        <div class="people-container">
+          <div v-for="item in items" :key="item.id">
+            <div class="people-item">
+              <van-image round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+      </van-tab>
       <van-tab title="猜你想学">内容 4</van-tab>
     </van-tabs>
   </div>
@@ -56,7 +85,35 @@ export default {
   },
   data() {
     return {
-      active: 0,
+      active: 2,
+      // active: 0,
+      introduction: {
+        title: 'VR全景制作',
+        subTitle: '3人学习 / 0 评论',
+        content:
+          '有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称'
+      },
+      teacher: {
+        name: '李老师',
+        position: '首席虚拟现实讲师',
+        introduction:
+          '有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称'
+      },
+      items: [
+        {
+          id: 1,
+          name: '小王1',
+          time: '2020-02-01',
+          content:
+            'hahahahaasdasdasasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdadsdasdasdasdasdasddasdasdasdasdasdasdasdahahhahaha'
+        },
+        { id: 2, name: '小王2', time: '2020-02-01', content: 'hahahahahahhahaha' },
+        { id: 3, name: '小王3', time: '2020-02-01', content: 'hahahahahahhahaha' },
+        { id: 4, name: '小王4', time: '2020-02-01', content: 'hahahahahahhahaha' },
+        { id: 5, name: '小王5', time: '2020-02-01', content: 'hahahahahahhahaha' },
+        { id: 6, name: '小王6', time: '2020-02-01', content: 'hahahahahahhahaha' },
+        { id: 7, name: '小王7', time: '2020-02-01', content: 'hahahahahahhahaha' }
+      ],
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
         autoplay: false, // 如果为true,浏览器准备好时开始回放。
@@ -144,5 +201,24 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.comment-container {
+  display: flex;
+}
+
+.comment-text {
+  width: 70vw;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
+.people-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.people-item {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0.5rem;
 }
 </style>
