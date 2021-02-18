@@ -1,6 +1,11 @@
 <template>
   <div class="mine">
-    <van-image width="100%" height="18rem" fit="fill" :src="require('@/assets/bizhi.jpeg')" />
+    <van-image
+      width="100%"
+      height="18rem"
+      fit="fill"
+      :src="require('@/assets/bizhi.jpeg')"
+    />
     <van-grid direction="horizontal" :column-num="2" style="margin-top:1rem">
       <van-grid-item icon="photo-o" text="我的收藏" />
       <van-grid-item icon="photo-o" text="我的课程" />
@@ -13,13 +18,21 @@
       <van-button style="width:80%;" type="info">设置</van-button>
       <br />
       <br />
-      <van-button style="width:80%;" type="warning" @click="logout">退出</van-button>
+      <van-button style="width:80%;" type="warning" @click="logout"
+        >退出</van-button
+      >
     </div>
 
     <!-- 个人信息 -->
     <div class="info">
       <h5>我的</h5>
-      <van-image round width="5rem" height="5rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+      <van-image
+        round
+        width="5rem"
+        height="5rem"
+        fit="cover"
+        src="https://img01.yzcdn.cn/vant/cat.jpeg"
+      />
       <h4>123123123123123</h4>
       <h6>{{ sign }}</h6>
     </div>
@@ -29,11 +42,12 @@
 <script>
 import storage from "../utils/storage";
 export default {
-  name: 'Mine',
+  name: "Mine",
   components: {},
   data() {
     return {
-      sign: '个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名'
+      sign:
+        "个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名"
     };
   },
   methods: {

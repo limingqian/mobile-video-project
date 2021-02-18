@@ -12,7 +12,32 @@
     >
     </video-player>
     <van-tabs v-model="active">
-      <van-tab title="介绍">内容 1</van-tab>
+      <van-tab title="介绍">
+        <div class="content">
+          <div class="buffer" style="font-size:1.2rem;">VR全景制作</div>
+          <div style="margin-left:1rem; font-size:0.6rem;">3人学习 / 0 评论</div>
+        </div>
+        <div style="text-align:left; margin:1rem 0.5rem 1rem 1rem;">
+          有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建
+          Router 实例的时候，在 routes 配置中给某个路由设置名称
+        </div>
+        <div class="line"></div>
+        <div class="teacher">
+          <div class="buffer" style="text-align:left;font-size:1.2rem;">讲师</div>
+          <div class="text-container">
+            <van-image class="buffer" round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+            <div class="text">
+              <div style="font-size:1.2rem;">李老师</div>
+              <div style="color:#00A2e0;">首席虚拟现实讲师</div>
+              <div style="text-align:left;margin-top:1rem;margin-bottom:4rem;">
+                有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建
+                Router 实例的时候，在 routes 配置中给某个路由设置名称
+              </div>
+            </div>
+          </div>
+          111
+        </div>
+      </van-tab>
       <van-tab title="评价">内容 2</van-tab>
       <van-tab title="学过此课">内容 3</van-tab>
       <van-tab title="猜你想学">内容 4</van-tab>
@@ -31,7 +56,7 @@ export default {
   },
   data() {
     return {
-      active: 2,
+      active: 0,
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
         autoplay: false, // 如果为true,浏览器准备好时开始回放。
@@ -44,7 +69,7 @@ export default {
         sources: [
           {
             type: 'video/mp4', // 类型
-            src: 'https://www.runoob.com/try/demo_source/movie.mp4' // url地址
+            src: '' // url地址
           }
         ],
         poster: '', // 封面地址
@@ -63,7 +88,16 @@ export default {
       return this.$refs.videoPlayer.player;
     }
   },
+  mounted() {
+    this.getVideo();
+  },
   methods: {
+    getVideo() {
+      console.log('===========');
+      console.log(this.$route.params.videoId);
+      console.log('===========');
+      this.playerOptions.sources[0].src = 'https://www.runoob.com/try/demo_source/movie.mp4';
+    },
     onClickLeft() {
       this.$router.push('/List');
     },
@@ -80,4 +114,35 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.line {
+  width: 90%;
+  height: 0.1rem;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.buffer {
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.text-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.text {
+  width: 70vw;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+</style>

@@ -16,10 +16,19 @@
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
           <!-- 封装为组件 -->
-          <div class="item">
+          <div class="item" @click="showDetail(item.id)">
             <van-image width="42vw" height="14vh" :src="require('@/assets/bizhi.jpeg')" />
-            <div class="videoTitle">{{ item.name }}</div>
-            <van-button class="videoButton" type="warning" @click="showDetail">推荐</van-button>
+            <div class="item-content">
+              <div style="width:100%">
+                <span class="videoTitle">{{ item.name }}</span>
+                <van-button class="videoButton" type="warning" @click="showDetail">
+                  推荐
+                </van-button>
+              </div>
+              <div style="margin-left:0.2rem;font-size:0.7rem;">
+                3人学习 / 0 评论
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -48,15 +57,15 @@ export default {
         { text: '刘老师', value: 'c' }
       ],
       items: [
-        { id: 1, name: 1 },
-        { id: 2, name: 2 },
-        { id: 3, name: 3 },
-        { id: 4, name: 4 },
-        { id: 5, name: 5 },
-        { id: 6, name: 6 },
-        { id: 7, name: 7 },
-        { id: 8, name: 8 },
-        { id: 9, name: 9 }
+        { id: 1, name: 'VR全景制作' },
+        { id: 2, name: 'VR全景制作' },
+        { id: 3, name: 'VR全景制作' },
+        { id: 4, name: 'VR全景制作' },
+        { id: 5, name: 'VR全景制作' },
+        { id: 6, name: 'VR全景制作' },
+        { id: 7, name: 'VR全景制作' },
+        { id: 8, name: 'VR全景制作' },
+        { id: 9, name: 'VR全景制作' }
       ]
     };
   },
@@ -65,10 +74,17 @@ export default {
     //   this.$store.commit("changeActive", 0);
     //   this.$router.push('/');
     // },
-    showDetail() {
-      this.$store.commit('changeActive', 1);
-      this.$router.push('/detail');
+    showDetail(videoId) {
+      console.log('====videoId=======');
+      console.log(videoId);
+      console.log('=====videoId======');
+
+      this.$router.push('/detail/' + videoId);
     }
+    // showDetail() {
+    //   this.$store.commit('changeActive', 1);
+    //   this.$router.push('/detail');
+    // }
   }
 };
 </script>
@@ -118,12 +134,20 @@ export default {
 }
 
 .videoTitle {
-  /* float: left; */
+  float: left;
+  margin-left: 0.2rem;
+  font-size: 0.8rem;
 }
 .videoButton {
-  /* float: right; */
+  float: right;
+  margin-right: 0.2rem;
   font-size: 0.6rem;
   height: 1.2rem;
   width: 3.2rem;
+}
+
+.item-content {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
