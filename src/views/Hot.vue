@@ -8,52 +8,46 @@
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
           <div class="item" @click="showDetail(item.id)">
-            <van-image
-              width="42vw"
-              height="14vh"
-              :src="require('@/assets/bizhi.jpeg')"
-            />
+            <van-image width="84vw" height="14vh" :src="require('@/assets/bizhi.jpeg')" />
             <div class="item-content">
               <div style="width:100%">
                 <span class="videoTitle">{{ item.name }}</span>
-                <van-button
-                  class="videoButton"
-                  type="warning"
-                  @click="showDetail"
-                >
+                <van-button class="videoButton" type="warning" @click="showDetail">
                   推荐
                 </van-button>
               </div>
-              <div style="margin-left:0.2rem;font-size:0.7rem;">
-                3人学习 / 0 评论
+              <div class="text">
+                 <!-- style="margin-left:0.2rem;font-size:0.7rem;" -->
+                <div>上传时间：{{ time }}</div>
+                <div>资源大小：{{ size }}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <van-button class="more" v-if="showMore" @click="readMore"
-      >查看更多</van-button
-    >
+    <van-button class="more" v-if="showMore" @click="readMore">查看更多</van-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: "lmqClassList",
+  name: 'lmqClassList',
   data() {
     return {
       selfValue: this.value,
+      time: '2021/01/21 16:40',
+      size: '20.28M',
       items: [
-        { id: 1, name: "VR全景制作" },
-        { id: 2, name: "VR全景制作" },
-        { id: 3, name: "VR全景制作" },
-        { id: 4, name: "VR全景制作" },
-        { id: 5, name: "VR全景制作" },
-        { id: 6, name: "VR全景制作" },
-        { id: 7, name: "VR全景制作" },
-        { id: 8, name: "VR全景制作" },
-        { id: 9, name: "VR全景制作" }
+        { id: 1, name: 'VR全景制作' },
+        { id: 2, name: 'VR全景制作' },
+        { id: 3, name: 'VR全景制作' },
+        { id: 4, name: 'VR全景制作' },
+        { id: 5, name: 'VR全景制作' },
+        { id: 6, name: 'VR全景制作' },
+        { id: 7, name: 'VR全景制作' },
+        { id: 8, name: 'VR全景制作' },
+        { id: 9, name: 'VR全景制作' }
       ]
     };
   },
@@ -61,7 +55,7 @@ export default {
     value: {
       type: String,
       default: () => {
-        return "";
+        return '';
       }
     },
     showMore: {
@@ -76,11 +70,11 @@ export default {
       // this.$router.push('/list');
     },
     showDetail(videoId) {
-      console.log("====videoId=======");
+      console.log('====videoId=======');
       console.log(videoId);
-      console.log("=====videoId======");
+      console.log('=====videoId======');
 
-      this.$router.push("/detail/" + videoId);
+      this.$router.push('/detail/' + videoId);
     }
   }
 };
@@ -137,8 +131,8 @@ export default {
 }
 
 .item {
-  width: 42vw;
-  height: 20vh;
+  width: 84vw;
+  height: 24vh;
   /* border: 1px solid red; */
   flex: 0 0 48%;
   margin-left: 2.5vw;
@@ -162,5 +156,12 @@ export default {
 .item-content {
   display: flex;
   flex-wrap: wrap;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  font-size:0.7rem;
+  text-align: left;
 }
 </style>

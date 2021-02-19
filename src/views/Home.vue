@@ -18,7 +18,7 @@
         <van-image width="2.5rem" height="2.5rem" :src="require('@/assets/icon/search.png')" />
         <div>在线课程</div>
       </div>
-      <div class="item">
+      <div class="item" @click="showHot()">
         <van-image width="2.5rem" height="2.5rem" :src="require('@/assets/icon/search.png')" />
         <div>热门课程</div>
       </div>
@@ -48,6 +48,9 @@ export default {
   methods: {
     doSearch(a) {
       this.value = a;
+    },
+    showHot() {
+      this.$router.push('/hot');
     }
   }
 };
