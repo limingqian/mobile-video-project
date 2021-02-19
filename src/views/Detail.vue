@@ -1,7 +1,6 @@
 <template>
   <div class="detail">
     <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" />
-    <!-- <van-image width="100%" height="100%" :src="require('@/assets/bizhi.jpeg')" /> -->
     <video-player
       ref="videoPlayer"
       :playsinline="true"
@@ -12,6 +11,7 @@
     >
     </video-player>
     <van-tabs v-model="active">
+      <!-- 介绍 -->
       <van-tab title="介绍">
         <div class="content">
           <div class="buffer" style="font-size:1.2rem;">
@@ -41,35 +41,42 @@
           </div>
         </div>
       </van-tab>
+      <!-- 评价 -->
       <van-tab title="评价">
-        <div v-for="item in items" :key="item.id">
-          <!-- 评价组件 -->
-          <div class="comment-container">
-            <van-image class="buffer" round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-            <div class="comment-text">
-              <div style="text-align:left;margin-top:1rem;">
-                {{ item.name }}
-                <span style="font-size:0.8rem;margin-left:1rem;">
-                  {{ item.time }}
-                </span>
+        <div class="margin-bottom">
+          <div v-for="item in items" :key="item.id">
+            <!-- 评价组件 -->
+            <div class="comment-container">
+              <van-image class="buffer" round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+              <div class="comment-text">
+                <div style="text-align:left;margin-top:1rem;">
+                  {{ item.name }}
+                  <span style="font-size:0.8rem;margin-left:1rem;">
+                    {{ item.time }}
+                  </span>
+                </div>
+                <van-field v-model="item.content" readonly autosize type="textarea" />
               </div>
-              <van-field v-model="item.content" readonly autosize type="textarea" />
             </div>
+            <div class="line"></div>
           </div>
-          <div class="line"></div>
         </div>
       </van-tab>
+      <!-- 学过此课 -->
       <van-tab title="学过此课">
-        <div class="people-container">
+        <div class="people-container margin-bottom">
           <div v-for="item in items" :key="item.id">
             <div class="people-item">
               <van-image round width="4rem" height="4rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              {{item.name}}
+              {{ item.name }}
             </div>
           </div>
         </div>
       </van-tab>
-      <van-tab title="猜你想学">内容 4</van-tab>
+      <!-- 猜你想学 -->
+      <van-tab title="猜你想学">
+        <LmqClassList />
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -78,10 +85,12 @@
 import 'video.js/dist/video-js.css';
 
 import { videoPlayer } from 'vue-video-player';
+import LmqClassList from '@/components/classList.vue';
 export default {
   name: 'Detail',
   components: {
-    videoPlayer
+    videoPlayer,
+    LmqClassList
   },
   data() {
     return {
@@ -202,7 +211,10 @@ export default {
   flex-direction: column;
   align-items: flex-start;
 }
-
+.margin-bottom {
+  /* 评论最后一条和底部的距离 */
+  margin-bottom: 4rem;
+}
 .comment-container {
   display: flex;
 }

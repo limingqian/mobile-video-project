@@ -7,15 +7,15 @@
       <van-dropdown-item v-model="value1" :options="option1" />
       <van-dropdown-item v-model="value2" :options="option2" />
     </van-dropdown-menu>
-    <div class="listItem">
+    <LmqClassList />
+    <!-- <div class="listItem">
       <div class="itemTitle">
         <span class="verticalLine"></span>
         <span class="itemTitleText">热门课程</span>
       </div>
-
+      
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
-          <!-- 封装为组件 -->
           <div class="item" @click="showDetail(item.id)">
             <van-image width="42vw" height="14vh" :src="require('@/assets/bizhi.jpeg')" />
             <div class="item-content">
@@ -32,15 +32,17 @@
           </div>
         </div>
       </div>
-    </div>
-    <van-button type="primary" @click="showDetail">查看详情</van-button>
+    </div> -->
   </div>
 </template>
 
 <script>
+import LmqClassList from '@/components/classList.vue';
 export default {
   name: 'List',
-  components: {},
+  components: {
+    LmqClassList
+  },
   data() {
     return {
       value: '',
@@ -93,7 +95,7 @@ export default {
   width: 95vw;
   /* height: 30vh; */
   border: black;
-  margin: 10px auto;
+  margin: 10px auto 4rem auto;
   box-shadow: darkgrey 1px 3px 5px 2px;
 }
 
