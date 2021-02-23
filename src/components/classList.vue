@@ -7,22 +7,30 @@
       </div>
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
-          <div class="item" @click="showDetail(item.id)">
+          <div class="item">
             <van-image
               width="42vw"
               height="14vh"
               :src="require('@/assets/bizhi.jpeg')"
+              @click="showDetail(item.id)"
             />
             <div class="item-content">
               <div style="width:100%">
                 <span class="videoTitle">{{ item.name }}</span>
-                <van-button
+                <!-- <van-button
                   class="videoButton"
                   type="warning"
                   @click="showDetail"
                 >
                   推荐
-                </van-button>
+                </van-button> -->
+                <van-image
+                  style="float:right;top:0.6rem;right:1rem"
+                  width="1.2rem"
+                  height="1.2rem"
+                  :src="item.collect"
+                  @click="changeCollect(item)"
+                />
               </div>
               <div style="margin-left:0.2rem;font-size:0.7rem;">
                 3人学习 / 0 评论
@@ -42,18 +50,23 @@
 export default {
   name: "lmqClassList",
   data() {
+    let a = require("@/assets/cancel.png");
+    let b = require("@/assets/collect.png");
     return {
       selfValue: this.value,
+      id: 10,
+      a,
+      b,
       items: [
-        { id: 1, name: "VR全景制作" },
-        { id: 2, name: "VR全景制作" },
-        { id: 3, name: "VR全景制作" },
-        { id: 4, name: "VR全景制作" },
-        { id: 5, name: "VR全景制作" },
-        { id: 6, name: "VR全景制作" },
-        { id: 7, name: "VR全景制作" },
-        { id: 8, name: "VR全景制作" },
-        { id: 9, name: "VR全景制作" }
+        { id: 1, name: "VR全景制作", collectJudge: true, collect: b },
+        { id: 2, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 3, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 4, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 5, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 6, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 7, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 8, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 9, name: "VR全景制作", collectJudge: false, collect: a }
       ]
     };
   },
@@ -73,6 +86,8 @@ export default {
   },
   methods: {
     readMore() {
+      this.id += 1;
+      this.items.push({ id: this.id, name: "VR全景制作" });
       // this.$router.push('/list');
     },
     showDetail(videoId) {
@@ -81,6 +96,20 @@ export default {
       console.log("=====videoId======");
 
       this.$router.push("/detail/" + videoId);
+    },
+    changeCollect(item) {
+      item.collectJudge = !item.collectJudge;
+      if (item.collectJudge) {
+        // 收藏成功
+        item.collect = this.b;
+        this.$toast('收藏成功');
+        // 调接口 TODO
+      } else {
+        // 取消收藏
+        item.collect = this.a;
+        this.$toast('取消收藏');
+        // 调接口 TODO
+      }
     }
   }
 };

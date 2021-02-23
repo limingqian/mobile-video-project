@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view />
+    <!-- 底部tabbar -->
     <van-tabbar v-if="isLogin" v-model="active" @change="changeTab">
       <van-tabbar-item icon="home-o" replace to="/">首页</van-tabbar-item>
       <van-tabbar-item icon="search" replace to="/list"

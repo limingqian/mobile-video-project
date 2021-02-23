@@ -16,6 +16,13 @@
         <div class="content">
           <div class="buffer" style="font-size:1.2rem;">
             {{ introduction.title }}
+            <van-image
+              style="float:right;top:0.6rem;left:14rem"
+              width="1.6rem"
+              height="1.6rem"
+              :src="collect"
+              @click="changeCollect()"
+            />
           </div>
           <div style="margin-left:1rem; font-size:0.6rem;">
             {{ introduction.subTitle }}
@@ -95,10 +102,6 @@
           </div>
         </div>
       </van-tab>
-      <!-- 猜你想学 -->
-      <van-tab title="猜你想学">
-        <LmqClassList />
-      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -107,17 +110,17 @@
 import "video.js/dist/video-js.css";
 
 import { videoPlayer } from "vue-video-player";
-import LmqClassList from "@/components/classList.vue";
 export default {
   name: "Detail",
   components: {
-    videoPlayer,
-    LmqClassList
+    videoPlayer
   },
   data() {
     return {
-      active: 2,
-      // active: 0,
+      collectJudge: false,
+      collect: require("@/assets/cancel.png"),
+      // active: 2,
+      active: 0,
       introduction: {
         title: "VR全景制作",
         subTitle: "3人学习 / 0 评论",
@@ -230,6 +233,20 @@ export default {
     },
     onPlayerEnded(player) {
       console.log(player);
+    },
+    changeCollect() {
+      this.collectJudge = !this.collectJudge;
+      if (this.collectJudge) {
+        // 收藏成功
+        this.collect = require("@/assets/collect.png");
+        this.$toast("收藏成功");
+        // 调接口 TODO
+      } else {
+        // 取消收藏
+        this.collect = require("@/assets/cancel.png");
+        this.$toast("取消收藏");
+        // 调接口 TODO
+      }
     }
   }
 };

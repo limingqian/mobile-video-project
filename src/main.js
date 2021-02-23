@@ -1,19 +1,21 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import { Button } from 'vant'; // 按需引入vant组件
-import { Image as VanImage } from 'vant';
-import { Grid, GridItem } from 'vant';
-import { Search } from 'vant';
-import { Col, Row } from 'vant';
-import { Tabbar, TabbarItem } from 'vant';
-import { NavBar } from 'vant';
-import { Field } from 'vant';
-import { Cell, CellGroup } from 'vant';
-import { Form } from 'vant';
-import { DropdownMenu, DropdownItem } from 'vant';
-import { Tab, Tabs } from 'vant';
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import { Button } from "vant"; // 按需引入vant组件
+import { Image as VanImage } from "vant";
+import { Grid, GridItem } from "vant";
+import { Search } from "vant";
+import { Col, Row } from "vant";
+import { Tabbar, TabbarItem } from "vant";
+import { NavBar } from "vant";
+import { Field } from "vant";
+import { Cell, CellGroup } from "vant";
+import { Form } from "vant";
+import { DropdownMenu, DropdownItem } from "vant";
+import { Tab, Tabs } from "vant";
+import { Icon } from "vant";
+import { Toast } from "vant";
 
 // import VueVideoPlayer from 'vue-video-player';
 // // require videojs style
@@ -40,6 +42,8 @@ Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 Vue.use(Tab);
 Vue.use(Tabs);
+Vue.use(Icon);
+Vue.use(Toast);
 
 // Vue.use(VueVideoPlayer /* {
 //   options: global default options,
@@ -50,4 +54,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app');
+}).$mount("#app");

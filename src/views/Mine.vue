@@ -6,16 +6,12 @@
       fit="fill"
       :src="require('@/assets/bizhi.jpeg')"
     />
-    <van-grid direction="horizontal" :column-num="2" style="margin-top:1rem">
-      <van-grid-item icon="photo-o" text="我的收藏" />
-      <van-grid-item icon="photo-o" text="我的课程" />
+    <van-grid direction="horizontal" :column-num="2" style="margin-top:2rem;">
+      <van-grid-item icon="like" text="我的收藏" @click="showHot()" />
+      <van-grid-item icon="gift" text="课程列表" @click="showHot()" />
     </van-grid>
     <!-- 功能按钮 -->
     <div class="operation">
-      <!-- <van-cell-group style="text-align:left">
-        <van-cell title="设置" icon="location-o" is-link />
-      </van-cell-group> -->
-      <van-button style="width:80%;" type="info">设置</van-button>
       <br />
       <br />
       <van-button style="width:80%;" type="warning" @click="logout"
@@ -28,13 +24,13 @@
       <h5>我的</h5>
       <van-image
         round
-        width="5rem"
-        height="5rem"
+        width="6rem"
+        height="6rem"
         fit="cover"
-        src="https://img01.yzcdn.cn/vant/cat.jpeg"
+        :src="require('@/assets/head.jpeg')"
       />
-      <h4 class="sign">123123123123123</h4>
-      <h6 class="sign">{{ sign }}</h6>
+      <h3 class="sign">李明谦</h3>
+      <!-- <h6 class="sign">{{ sign }}</h6> -->
     </div>
   </div>
 </template>
@@ -54,6 +50,9 @@ export default {
     logout() {
       storage.clear();
       this.$router.push("/login");
+    },
+    showHot() {
+      this.$router.push("/hot");
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
   <div class="classList">
+    <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" />
     <div class="listItem">
       <div class="itemTitle">
         <span class="verticalLine"></span>
@@ -7,17 +8,26 @@
       </div>
       <div class="itemList">
         <div v-for="item in items" :key="item.id">
-          <div class="item" @click="showDetail(item.id)">
-            <van-image width="84vw" height="14vh" :src="require('@/assets/bizhi.jpeg')" />
+          <div class="item">
+            <van-image
+              width="84vw"
+              height="14vh"
+              :src="require('@/assets/bizhi.jpeg')"
+              @click="showDetail(item.id)"
+            />
             <div class="item-content">
               <div style="width:100%">
                 <span class="videoTitle">{{ item.name }}</span>
-                <van-button class="videoButton" type="warning" @click="showDetail">
-                  推荐
-                </van-button>
+                <van-image
+                  style="float:right;top:1rem;right:1rem"
+                  width="1.2rem"
+                  height="1.2rem"
+                  :src="item.collect"
+                  @click="changeCollect(item)"
+                />
               </div>
               <div class="text">
-                 <!-- style="margin-left:0.2rem;font-size:0.7rem;" -->
+                <!-- style="margin-left:0.2rem;font-size:0.7rem;" -->
                 <div>上传时间：{{ time }}</div>
                 <div>资源大小：{{ size }}</div>
               </div>
@@ -26,28 +36,34 @@
         </div>
       </div>
     </div>
-    <van-button class="more" v-if="showMore" @click="readMore">查看更多</van-button>
+    <van-button class="more" v-if="showMore" @click="readMore"
+      >查看更多</van-button
+    >
   </div>
 </template>
 
 <script>
 export default {
-  name: 'lmqClassList',
+  name: "lmqClassList",
   data() {
+    let a = require("@/assets/cancel.png");
+    let b = require("@/assets/collect.png");
     return {
       selfValue: this.value,
-      time: '2021/01/21 16:40',
-      size: '20.28M',
+      time: "2021/01/21 16:40",
+      size: "20.28M",
+      a,
+      b,
       items: [
-        { id: 1, name: 'VR全景制作' },
-        { id: 2, name: 'VR全景制作' },
-        { id: 3, name: 'VR全景制作' },
-        { id: 4, name: 'VR全景制作' },
-        { id: 5, name: 'VR全景制作' },
-        { id: 6, name: 'VR全景制作' },
-        { id: 7, name: 'VR全景制作' },
-        { id: 8, name: 'VR全景制作' },
-        { id: 9, name: 'VR全景制作' }
+        { id: 1, name: "VR全景制作", collectJudge: true, collect: b },
+        { id: 2, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 3, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 4, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 5, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 6, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 7, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 8, name: "VR全景制作", collectJudge: false, collect: a },
+        { id: 9, name: "VR全景制作", collectJudge: false, collect: a }
       ]
     };
   },
@@ -55,7 +71,7 @@ export default {
     value: {
       type: String,
       default: () => {
-        return '';
+        return "";
       }
     },
     showMore: {
@@ -70,11 +86,28 @@ export default {
       // this.$router.push('/list');
     },
     showDetail(videoId) {
-      console.log('====videoId=======');
+      console.log("====videoId=======");
       console.log(videoId);
-      console.log('=====videoId======');
+      console.log("=====videoId======");
 
-      this.$router.push('/detail/' + videoId);
+      this.$router.push("/detail/" + videoId);
+    },
+    onClickLeft() {
+      this.$router.go(-1);
+    },
+    changeCollect(item) {
+      item.collectJudge = !item.collectJudge;
+      if (item.collectJudge) {
+        // 收藏成功
+        item.collect = this.b;
+        this.$toast("收藏成功");
+        // 调接口 TODO
+      } else {
+        // 取消收藏
+        item.collect = this.a;
+        this.$toast("取消收藏");
+        // 调接口 TODO
+      }
     }
   }
 };
@@ -161,7 +194,7 @@ export default {
 .text {
   display: flex;
   flex-direction: column;
-  font-size:0.7rem;
+  font-size: 0.7rem;
   text-align: left;
 }
 </style>
