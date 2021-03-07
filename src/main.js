@@ -22,6 +22,12 @@ import { Toast } from "vant";
 // import 'video.js/dist/video-js.css';
 // // import 'vue-video-player/src/custom-theme.css'
 
+import VideoPlayer from "vue-video-player";
+require("video.js/dist/video-js.css");
+require("vue-video-player/src/custom-theme.css");
+require("./styles/video.css");
+Vue.use(VideoPlayer);
+
 Vue.config.productionTip = false;
 
 Vue.use(Button);

@@ -135,7 +135,7 @@ export default {
   width: 95vw;
   /* height: 30vh; */
   border: black;
-  margin: 10px auto;
+  margin: auto auto 10px auto;
   box-shadow: darkgrey 1px 3px 5px 2px;
 }
 
