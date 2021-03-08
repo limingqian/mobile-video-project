@@ -34,12 +34,12 @@ export default {
   components: {},
   mounted() {
     this.$store.commit("no");
-    storage.clear();
+    storage.clear(); // login只要一打开就清空认证信息
   },
   data() {
     return {
-      username: "",
-      pwd: ""
+      username: "18640461665",
+      pwd: "123456"
     };
   },
   methods: {
@@ -49,17 +49,16 @@ export default {
         username: values.username,
         pwd: values.pwd
       });
+      let result = response.data;
 
-      // 返回权限列表
-      let auth = response.data;
-
-      if (auth === "error") {
+      if (result.success === false) {
         Toast("用户名或密码错误");
         this.username = "";
         this.pwd = "";
         this.$store.commit("no");
       } else {
-        storage.set("auth", auth);
+        Toast("登陆成功");
+        storage.set("userId", result.entity.userId);
         this.$store.commit("yes");
         this.$store.commit("changeActive", 0);
         this.$router.push("/");

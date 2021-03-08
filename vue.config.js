@@ -19,5 +19,18 @@ module.exports = {
           }
         }
       });
+  },
+  devServer: {
+    proxy: {
+      // proxy all requests starting with /api to jsonplaceholder
+      // 解决本地开发调用远程接口的跨域问题
+      "/api": {
+        target: "http://jinran.jisoft.net/inxedu",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": ""
+        }
+      }
+    }
   }
 };

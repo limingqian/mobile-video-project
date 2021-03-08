@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from '../views/Home.vue';
-// import { isLogin } from "./../utils/auth";
+import { isLogin } from "./../utils/auth";
 // check,
 import Forbidden from "./../views/403"; // 非异步加载
 // import findLast from "lodash/findLast";
@@ -60,11 +60,11 @@ const router = new VueRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  // if (!isLogin() && to.name !== "Login") {
-  //   next({
-  //     name: "Login"
-  //   });
-  // } else next();
+  if (!isLogin() && to.name !== "Login") {
+    next({
+      name: "Login"
+    });
+  }
   next();
 });
 

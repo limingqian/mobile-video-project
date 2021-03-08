@@ -17,7 +17,9 @@ export function check(authority) {
 export function isLogin() {
   // 为了调试
   // return true;
-  const current = getCurrentAuthority();
+  // const current = getCurrentAuthority();
   // 存在且不是游客
-  return current && current.indexOf("guest") < 0;
+  // return current && current.indexOf("guest") < 0;
+  let authArray = storage.get("userId");
+  return authArray.length > 0;
 }

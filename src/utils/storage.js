@@ -15,7 +15,8 @@ export default {
       store = JSON.parse(store);
       return [store.data[key]];
     }
-    return ["guest"];
+    // return ["guest"];
+    return [];
   },
   // remove(key) {
   //   let store = localStorage.getItem(field)
