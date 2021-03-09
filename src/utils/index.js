@@ -2,6 +2,9 @@
 // export const baseUrl = 'http://jinran.jisoft.net/inxedu'
 export const baseUrl = "/api";
 
+import storage from "./storage";
+let Base64 = require("js-base64").Base64;
+
 // 转换参数为 form-data
 export const change = [
   function(data) {
@@ -13,3 +16,6 @@ export const change = [
     return ret;
   }
 ];
+
+let userId = storage.get("userId");
+export const getToken = Base64.encode(userId[0]);

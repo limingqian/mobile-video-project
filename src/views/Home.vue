@@ -8,15 +8,26 @@
     <div class="main">
       <div class="container">
         <div class="big-text">打造虚幻世界</div>
-        <div class="small-text">虚幻引擎是全球最开放、最先进的实时3D创作平台。经过持续的改进。</div>
+        <div class="small-text">
+          虚幻引擎是全球最开放、最先进的实时3D创作平台。经过持续的改进。
+        </div>
         <div class="small-text">
           它已经不仅仅是一款殿堂级的游戏引擎，还能为各行各业的专业人士带去无限的创作自由和空前的掌控力。
         </div>
-        <div class="small-text">无论是前沿内容、互动体验还是沉浸式虚拟世界，一切尽在虚幻引擎</div>
+        <div class="small-text">
+          无论是前沿内容、互动体验还是沉浸式虚拟世界，一切尽在虚幻引擎
+        </div>
       </div>
       <!-- @/assets/first.mp4 -->
       <!-- 微信不支持，用poster替代 -->
-      <video class="bg_video" poster="@/assets/bizhi1.jpg" playsinline autoplay loop muted>
+      <video
+        class="bg_video"
+        poster="@/assets/bizhi1.jpg"
+        playsinline
+        autoplay
+        loop
+        muted
+      >
         <source src="@/assets/first.mp4" />
       </video>
     </div>
@@ -49,18 +60,33 @@
 
 <script>
 // import LmqSearch from '@/components/search.vue';
-import LmqClassList from '@/components/classList.vue';
+import LmqClassList from "@/components/classList.vue";
+// import { courseList } from "./../api/course";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     LmqClassList
   },
+  // async mounted() {
+  //   // 请求接口
+  //   const response = await courseList({
+  //     currentPage: this.currentPage,
+  //     pageSize: this.pageSize
+  //   });
+  //   let result = response.data;
+  //   console.log("===========");
+  //   console.log(result);
+  //   // console.log(this.currentPage);
+  //   console.log("===========");
+  // },
   data() {
     return {
-      value: '',
+      value: "",
       active: 0,
-      showMore: true
+      showMore: true,
+      currentPage: 1,
+      pageSize: 10
     };
   },
   methods: {
@@ -68,7 +94,7 @@ export default {
       this.value = a;
     },
     showHot() {
-      this.$router.push('/hot');
+      this.$router.push("/hot");
     }
   }
 };

@@ -2,7 +2,7 @@
   <div class="detail">
     <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" />
     <video-player
-    class="video-player vjs-custom-skin"
+      class="video-player vjs-custom-skin"
       ref="videoPlayer"
       :playsinline="true"
       :options="playerOptions"
@@ -29,7 +29,10 @@
             {{ introduction.subTitle }}
           </div>
         </div>
-        <div style="text-align:left; margin:1rem 0.5rem 1rem 1rem;">
+        <!-- white-space:pre-line; 处理换行 -->
+        <div
+          style="text-align:left;margin:1rem 0.5rem 1rem 1rem;white-space:pre-line;"
+        >
           {{ introduction.content }}
         </div>
         <div class="line"></div>
@@ -111,6 +114,7 @@
 import "video.js/dist/video-js.css";
 
 import { videoPlayer } from "vue-video-player";
+import { courseDetail } from "./../api/course";
 export default {
   name: "Detail",
   components: {
@@ -118,15 +122,13 @@ export default {
   },
   data() {
     return {
-      collectJudge: false,
+      collectJudge: false, // TODO
       collect: require("@/assets/cancel.png"),
-      // active: 2,
       active: 0,
       introduction: {
-        title: "VR全景制作",
-        subTitle: "3人学习 / 0 评论",
-        content:
-          "有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称"
+        title: "",
+        subTitle: "",
+        content: ""
       },
       teacher: {
         name: "李老师",
@@ -136,13 +138,6 @@ export default {
       },
       items: [
         {
-          id: 1,
-          name: "小王1",
-          time: "2020-02-01",
-          content:
-            "hahahahaasdasdasasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdadsdasdasdasdasdasddasdasdasdasdasdasdasdahahhahaha"
-        },
-        {
           id: 2,
           name: "小王2",
           time: "2020-02-01",
@@ -151,30 +146,6 @@ export default {
         {
           id: 3,
           name: "小王3",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        },
-        {
-          id: 4,
-          name: "小王4",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        },
-        {
-          id: 5,
-          name: "小王5",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        },
-        {
-          id: 6,
-          name: "小王6",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        },
-        {
-          id: 7,
-          name: "小王7",
           time: "2020-02-01",
           content: "hahahahahahhahaha"
         }
@@ -211,14 +182,26 @@ export default {
       return this.$refs.videoPlayer.player;
     }
   },
-  mounted() {
-    this.getVideo();
+  async mounted() {
+    await this.getVideo();
   },
   methods: {
-    getVideo() {
-      console.log("===========");
-      console.log(this.$route.params.videoId);
-      console.log("===========");
+    async getVideo() {
+      let resultTemp = await courseDetail({
+        courseId: this.$route.params.courseId
+      });
+      let result = resultTemp.data;
+      if (result.success) {
+        let entity = result.entity;
+        this.introduction.title = entity.courseName;
+        this.introduction.subTitle =
+          entity.pageBuycount + "人学习 / " + entity.pageBuycount + " 评论";
+        entity.context = entity.context.replace(/<p>/g, "");
+        entity.context = entity.context.replace(/<\/p>/g, "");
+
+        this.introduction.content = entity.context;
+      }
+
       this.playerOptions.sources[0].src =
         "https://www.runoob.com/try/demo_source/movie.mp4";
     },

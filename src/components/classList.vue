@@ -6,24 +6,17 @@
         <span class="itemTitleText">热门课程</span>
       </div>
       <div class="itemList">
-        <div v-for="item in items" :key="item.id">
+        <div v-for="item in items" :key="item.courseId">
           <div class="item">
             <van-image
               width="42vw"
               height="14vh"
-              :src="require('@/assets/bizhi.jpeg')"
-              @click="showDetail(item.id)"
+              :src="item.logo"
+              @click="showDetail(item.courseId)"
             />
             <div class="item-content">
               <div style="width:100%">
-                <span class="videoTitle">{{ item.name }}</span>
-                <!-- <van-button
-                  class="videoButton"
-                  type="warning"
-                  @click="showDetail"
-                >
-                  推荐
-                </van-button> -->
+                <span class="videoTitle">{{ item.courseName }}</span>
                 <van-image
                   style="float:right;top:0.6rem;right:1rem"
                   width="1.2rem"
@@ -33,7 +26,7 @@
                 />
               </div>
               <div style="margin-left:0.2rem;font-size:0.7rem;">
-                3人学习 / 0 评论
+                {{ item.pageBuycount }}人学习 / {{ item.pageBuycount }} 评论
               </div>
             </div>
           </div>
@@ -47,27 +40,24 @@
 </template>
 
 <script>
+import { courseList } from "./../api/course";
+import { baseUrl } from "../utils";
+import { Toast } from "vant";
 export default {
   name: "lmqClassList",
+  async mounted() {
+    // 请求接口
+    this.items = await this.courseList1();
+  },
   data() {
     let a = require("@/assets/cancel.png");
     let b = require("@/assets/collect.png");
     return {
-      selfValue: this.value,
-      id: 10,
+      currentPage: 1,
+      pageSize: 6,
       a,
       b,
-      items: [
-        { id: 1, name: "VR全景制作", collectJudge: true, collect: b },
-        { id: 2, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 3, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 4, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 5, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 6, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 7, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 8, name: "VR全景制作", collectJudge: false, collect: a },
-        { id: 9, name: "VR全景制作", collectJudge: false, collect: a }
-      ]
+      items: []
     };
   },
   props: {
@@ -85,29 +75,49 @@ export default {
     }
   },
   methods: {
-    readMore() {
-      this.id += 1;
-      this.items.push({ id: this.id, name: "VR全景制作" });
-      // this.$router.push('/list');
+    async readMore() {
+      this.currentPage += 1;
+      let tempItems = await this.courseList1();
+      if (tempItems.length > 0) {
+        this.items = this.items.concat(tempItems);
+      } else {
+        Toast("以上是全部课程");
+      }
     },
-    showDetail(videoId) {
-      console.log("====videoId=======");
-      console.log(videoId);
-      console.log("=====videoId======");
-
-      this.$router.push("/detail/" + videoId);
+    async courseList1() {
+      const response = await courseList({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize
+      });
+      let result = response.data;
+      if (result.success) {
+        return result.entity.courseList.map(item => {
+          return {
+            courseId: item.courseId,
+            courseName: item.courseName,
+            pageBuycount: item.pageBuycount,
+            logo: baseUrl + item.logo,
+            collectJudge: false, // TODO 收藏
+            collect: this.a
+          };
+        });
+      }
+      return [];
+    },
+    showDetail(courseId) {
+      this.$router.push("/detail/" + courseId);
     },
     changeCollect(item) {
       item.collectJudge = !item.collectJudge;
       if (item.collectJudge) {
         // 收藏成功
         item.collect = this.b;
-        this.$toast('收藏成功');
+        this.$toast("收藏成功");
         // 调接口 TODO
       } else {
         // 取消收藏
         item.collect = this.a;
-        this.$toast('取消收藏');
+        this.$toast("取消收藏");
         // 调接口 TODO
       }
     }
