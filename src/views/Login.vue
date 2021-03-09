@@ -1,12 +1,13 @@
 <template>
   <div class="login">
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" style="margin-top:10rem">
       <van-field
         v-model="username"
         name="username"
         label="用户名"
         placeholder="用户名"
         :rules="[{ required: true, message: '请填写用户名' }]"
+        style="margin-left:2rem"
       />
       <van-field
         v-model="pwd"
@@ -15,9 +16,15 @@
         label="密码"
         placeholder="密码"
         :rules="[{ required: true, message: '请填写密码' }]"
+        style="margin-top:2rem;margin-left:2rem"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit"
+        <van-button
+          round
+          block
+          type="info"
+          native-type="submit"
+          style="margin-top:3rem"
           >登录</van-button
         >
       </div>
@@ -61,6 +68,7 @@ export default {
         storage.set("userId", result.entity.userId);
         this.$store.commit("yes");
         this.$store.commit("changeActive", 0);
+        this.$store.commit("userName", result.entity.userName);
         this.$router.push("/");
       }
     }

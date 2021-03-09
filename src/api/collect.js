@@ -1,14 +1,14 @@
 import axios from "axios";
 import { baseUrl, change, getToken } from "../utils";
 
-// 课程列表接口
-export const courseList = async params => {
+// 收藏接口
+export const collect = async params => {
   axios.defaults.baseURL = baseUrl;
   axios.defaults.contentType = "application/x-www-form-urlencoded";
   axios.defaults.headers.common["token"] = getToken;
 
   const config = {
-    url: "/webapp/cou/list",
+    url: "/webapp/front/createfavorites",
     method: "post",
     data: params, // 直接传递参数
     transformRequest: change
@@ -18,14 +18,14 @@ export const courseList = async params => {
   return await axios(config);
 };
 
-// 课程详情接口
-export const courseDetail = async params => {
+// 取消收藏接口
+export const cancelCollect = async params => {
   axios.defaults.baseURL = baseUrl;
   axios.defaults.contentType = "application/x-www-form-urlencoded";
   axios.defaults.headers.common["token"] = getToken;
 
   const config = {
-    url: "/webapp/front/couinfo",
+    url: "/webapp/deleteFaveorite",
     method: "post",
     data: params, // 直接传递参数
     transformRequest: change
@@ -35,19 +35,23 @@ export const courseDetail = async params => {
   return await axios(config);
 };
 
-// 我的课程列表接口
-export const myCourseList = async params => {
+// 我的收藏接口
+export const myCollection = async params => {
   axios.defaults.baseURL = baseUrl;
   axios.defaults.contentType = "application/x-www-form-urlencoded";
   axios.defaults.headers.common["token"] = getToken;
 
   const config = {
-    url: "/webapp/myCourse",
+    url: "/webapp/myFavorites",
     method: "post",
     data: params, // 直接传递参数
-    transformRequest: change // 转换为 form-data
+    transformRequest: change
   };
   axios.defaults.withCredentials = true;
 
   return await axios(config);
 };
+
+
+
+

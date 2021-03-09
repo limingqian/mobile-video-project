@@ -6,6 +6,7 @@
         <span class="itemTitleText">热门课程</span>
       </div>
       <div class="itemList">
+        <div v-if="items.length === 0" style="margin:2rem auto">暂无课程</div>
         <div v-for="item in items" :key="item.courseId">
           <div class="item">
             <van-image
@@ -33,7 +34,10 @@
         </div>
       </div>
     </div>
-    <van-button class="more" v-if="showMore" @click="readMore"
+    <van-button
+      class="more"
+      v-if="showMore && items.length > 0"
+      @click="readMore"
       >查看更多</van-button
     >
   </div>
@@ -46,6 +50,10 @@ import { Toast } from "vant";
 export default {
   name: "lmqClassList",
   async mounted() {
+    // 清空条件
+    this.subjectId = "";
+    this.teacherId = "";
+    this.courseName = "";
     // 请求接口
     this.items = await this.courseList1();
   },
@@ -57,7 +65,10 @@ export default {
       pageSize: 6,
       a,
       b,
-      items: []
+      items: [],
+      subjectId: "",
+      teacherId: "",
+      courseName: ""
     };
   },
   props: {
@@ -77,30 +88,50 @@ export default {
   methods: {
     async readMore() {
       this.currentPage += 1;
-      let tempItems = await this.courseList1();
+      let tempItems = await this.courseList1({
+        subjectId: this.subjectId,
+        teacherId: this.teacherId,
+        courseName: this.courseName
+      });
       if (tempItems.length > 0) {
         this.items = this.items.concat(tempItems);
       } else {
+        this.currentPage -= 1;
         Toast("以上是全部课程");
       }
     },
-    async courseList1() {
-      const response = await courseList({
+    async courseList1(param) {
+      let condition = {
         currentPage: this.currentPage,
         pageSize: this.pageSize
-      });
+      };
+      if (param) {
+        let paramArray = Object.keys(param);
+        for (let i = 0; i < paramArray.length; i++) {
+          if (param[paramArray[i]]) {
+            condition[paramArray[i]] = param[paramArray[i]];
+          }
+        }
+      }
+      console.log("======condition=====");
+      console.log(condition);
+      console.log("=====condition======");
+
+      const response = await courseList(condition);
       let result = response.data;
       if (result.success) {
-        return result.entity.courseList.map(item => {
-          return {
-            courseId: item.courseId,
-            courseName: item.courseName,
-            pageBuycount: item.pageBuycount,
-            logo: baseUrl + item.logo,
-            collectJudge: false, // TODO 收藏
-            collect: this.a
-          };
-        });
+        if (result.entity.courseList != null) {
+          return result.entity.courseList.map(item => {
+            return {
+              courseId: item.courseId,
+              courseName: item.courseName,
+              pageBuycount: item.pageBuycount,
+              logo: baseUrl + item.logo,
+              collectJudge: false, // TODO 收藏
+              collect: this.a
+            };
+          });
+        }
       }
       return [];
     },
@@ -120,6 +151,28 @@ export default {
         this.$toast("取消收藏");
         // 调接口 TODO
       }
+    },
+    async changeSub(subjectId) {
+      if (!subjectId) {
+        this.currentPage = 1;
+      }
+      this.subjectId = subjectId;
+      this.items = await this.courseList1({
+        subjectId: this.subjectId,
+        teacherId: this.teacherId,
+        courseName: this.courseName
+      });
+    },
+    async changeSearch(courseName) {
+      if (!courseName) {
+        this.currentPage = 1;
+      }
+      this.courseName = courseName;
+      this.items = await this.courseList1({
+        subjectId: this.subjectId,
+        teacherId: this.teacherId,
+        courseName: this.courseName
+      });
     }
   }
 };

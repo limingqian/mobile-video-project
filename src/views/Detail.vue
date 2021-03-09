@@ -17,21 +17,21 @@
         <div class="content">
           <div class="buffer" style="font-size:1.2rem;">
             {{ introduction.title }}
+          </div>
+          <div style="margin-left:1rem; font-size:0.6rem;">
+            {{ introduction.subTitle }}
             <van-image
-              style="float:right;top:0.6rem;left:14rem"
+              style="float:right;top:-1rem;left:14rem"
               width="1.6rem"
               height="1.6rem"
               :src="collect"
               @click="changeCollect()"
             />
           </div>
-          <div style="margin-left:1rem; font-size:0.6rem;">
-            {{ introduction.subTitle }}
-          </div>
         </div>
         <!-- white-space:pre-line; 处理换行 -->
         <div
-          style="text-align:left;margin:1rem 0.5rem 1rem 1rem;white-space:pre-line;"
+          style="text-align:left;margin:1rem 0.5rem 1rem 1rem;white-space:pre-line;width:84vw;"
         >
           {{ introduction.content }}
         </div>
@@ -198,6 +198,7 @@ export default {
           entity.pageBuycount + "人学习 / " + entity.pageBuycount + " 评论";
         entity.context = entity.context.replace(/<p>/g, "");
         entity.context = entity.context.replace(/<\/p>/g, "");
+        entity.context = entity.context.replace(/<br \/>/g, "");
 
         this.introduction.content = entity.context;
       }

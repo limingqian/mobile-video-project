@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLogin: true,
-    activeItem: 0
+    activeItem: 0,
+    userName: ""
   },
   mutations: {
     yes(state) {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     changeActive(state, n) {
       state.activeItem = n;
+    },
+    userName(state, n) {
+      state.userName = n;
     }
   },
   actions: {},

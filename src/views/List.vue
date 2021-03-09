@@ -2,91 +2,98 @@
   <div class="list">
     <!-- <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" /> -->
     <van-nav-bar title="VR全景制作" />
-    <van-search v-model="value" shape="round" placeholder="请输入搜索关键词" />
+    <van-search
+      v-model="value"
+      shape="round"
+      placeholder="请输入搜索关键词"
+      @search="onSearch"
+      @cancel="onCancel"
+    />
     <van-dropdown-menu>
-      <van-dropdown-item v-model="value1" :options="option1" />
-      <van-dropdown-item v-model="value2" :options="option2" />
+      <van-dropdown-item
+        v-model="value1"
+        :options="option1"
+        @change="changeSub"
+      />
+      <van-dropdown-item
+        v-model="value2"
+        :options="option2"
+        @change="changeTeacher"
+      />
     </van-dropdown-menu>
-    <LmqClassList />
-    <!-- <div class="listItem">
-      <div class="itemTitle">
-        <span class="verticalLine"></span>
-        <span class="itemTitleText">热门课程</span>
-      </div>
-      
-      <div class="itemList">
-        <div v-for="item in items" :key="item.id">
-          <div class="item" @click="showDetail(item.id)">
-            <van-image width="42vw" height="14vh" :src="require('@/assets/bizhi.jpeg')" />
-            <div class="item-content">
-              <div style="width:100%">
-                <span class="videoTitle">{{ item.name }}</span>
-                <van-button class="videoButton" type="warning" @click="showDetail">
-                  推荐
-                </van-button>
-              </div>
-              <div style="margin-left:0.2rem;font-size:0.7rem;">
-                3人学习 / 0 评论
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    <LmqClassList ref="classList"/>
   </div>
 </template>
 
 <script>
-import LmqClassList from '@/components/classList.vue';
+import LmqClassList from "@/components/classList.vue";
+import { subjectList } from "./../api/condition";
+// teacherList
 export default {
-  name: 'List',
+  name: "List",
   components: {
     LmqClassList
   },
   data() {
     return {
-      value: '',
+      value: "",
       value1: 0,
-      value2: 'a',
-      option1: [
-        { text: '全部班型', value: 0 },
-        { text: '大班', value: 1 },
-        { text: '小班', value: 2 }
-      ],
+      value2: "a",
+      option1: [{ text: "全部专业", value: 0 }],
       option2: [
-        { text: '全部讲师', value: 'a' },
-        { text: '李老师', value: 'b' },
-        { text: '刘老师', value: 'c' }
+        { text: "全部讲师", value: "a" },
+        { text: "李老师", value: "b" },
+        { text: "刘老师", value: "c" }
       ],
       items: [
-        { id: 1, name: 'VR全景制作' },
-        { id: 2, name: 'VR全景制作' },
-        { id: 3, name: 'VR全景制作' },
-        { id: 4, name: 'VR全景制作' },
-        { id: 5, name: 'VR全景制作' },
-        { id: 6, name: 'VR全景制作' },
-        { id: 7, name: 'VR全景制作' },
-        { id: 8, name: 'VR全景制作' },
-        { id: 9, name: 'VR全景制作' }
+        { id: 1, name: "VR全景制作" },
+        { id: 2, name: "VR全景制作" },
+        { id: 3, name: "VR全景制作" },
+        { id: 4, name: "VR全景制作" },
+        { id: 5, name: "VR全景制作" },
+        { id: 6, name: "VR全景制作" },
+        { id: 7, name: "VR全景制作" },
+        { id: 8, name: "VR全景制作" },
+        { id: 9, name: "VR全景制作" }
       ]
     };
   },
-  methods: {
-    // onClickLeft() {
-    //   this.$store.commit("changeActive", 0);
-    //   this.$router.push('/');
-    // },
-    showDetail(videoId) {
-      console.log('====videoId=======');
-      console.log(videoId);
-      console.log('=====videoId======');
-
-      this.$router.push('/detail/' + videoId);
+  async mounted() {
+    // 获取全部专业和讲师
+    let resultTemp = await subjectList();
+    // let resultTemp1 = await teacherList();
+    // console.log("===========");
+    // console.log(resultTemp1);
+    // console.log("===========");
+    let result = resultTemp.data;
+    if (result.success) {
+      let entity = result.entity;
+      entity.forEach(temp => {
+        this.option1.push({
+          value: temp.subjectId,
+          text: temp.subjectName
+        });
+      });
     }
-    // showDetail() {
-    //   this.$store.commit('changeActive', 1);
-    //   this.$router.push('/detail');
-    // }
+  },
+  methods: {
+    changeSub(value) {
+      // 改变classList
+      this.$refs.classList.changeSub(value);
+    },
+    changeTeacher(value) {
+      // 改变classList
+      console.log("===========");
+      console.log(value);
+      console.log("===========");
+    },
+    onSearch() {
+      // 条件查询
+      this.$refs.classList.changeSearch(this.value);
+    },
+    onCancel() {
+      // 清空条件
+    }
   }
 };
 </script>

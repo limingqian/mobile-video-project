@@ -4,11 +4,15 @@
       width="100%"
       height="18rem"
       fit="fill"
-      :src="require('@/assets/bizhi.jpeg')"
+      :src="require('@/assets/vr.jpeg')"
     />
     <van-grid direction="horizontal" :column-num="2" style="margin-top:2rem;">
-      <van-grid-item icon="like" text="我的收藏" @click="showHot()" />
-      <van-grid-item icon="gift" text="课程列表" @click="showHot()" />
+      <van-grid-item
+        icon="like"
+        text="我的收藏"
+        @click="showHot('mycollect')"
+      />
+      <van-grid-item icon="gift" text="课程列表" @click="showHot('mycourse')" />
     </van-grid>
     <!-- 功能按钮 -->
     <div class="operation">
@@ -29,7 +33,7 @@
         fit="cover"
         :src="require('@/assets/head.jpeg')"
       />
-      <h3 class="sign">李明谦</h3>
+      <h3 class="sign">{{ userName }}</h3>
       <!-- <h6 class="sign">{{ sign }}</h6> -->
     </div>
   </div>
@@ -46,13 +50,20 @@ export default {
         "个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名"
     };
   },
+  computed: {
+    userName: {
+      get() {
+        return this.$store.state.userName;
+      }
+    }
+  },
   methods: {
     logout() {
       storage.clear();
       this.$router.push("/login");
     },
-    showHot() {
-      this.$router.push("/hot");
+    showHot(type) {
+      this.$router.push("/hot/" + type);
     }
   }
 };
