@@ -1,5 +1,5 @@
-const BASE_URL =
-  process.env.NODE_ENV === "production" ? "/mobile-video-project/" : "/";
+const BASE_URL = process.env.NODE_ENV === "production" ? "/" : "/";
+// /mobile-video-project/
 
 module.exports = {
   publicPath: BASE_URL,

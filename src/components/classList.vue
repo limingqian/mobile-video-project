@@ -27,7 +27,7 @@
                 />
               </div>
               <div style="margin-left:0.2rem;font-size:0.7rem;">
-                {{ item.pageBuycount }}人学习 / {{ item.pageBuycount }} 评论
+                {{ item.pageViewcount }}人学习 / {{ item.commentCount }} 评论
               </div>
             </div>
           </div>
@@ -47,6 +47,8 @@
 import { courseList } from "./../api/course";
 import { baseUrl } from "../utils";
 import { Toast } from "vant";
+import storage from "../utils/storage";
+import { collect, cancelCollect } from "../api/collect";
 export default {
   name: "lmqClassList",
   async mounted() {
@@ -54,6 +56,7 @@ export default {
     this.subjectId = "";
     this.teacherId = "";
     this.courseName = "";
+    this.userId = storage.get("userId");
     // 请求接口
     this.items = await this.courseList1();
   },
@@ -68,7 +71,8 @@ export default {
       items: [],
       subjectId: "",
       teacherId: "",
-      courseName: ""
+      courseName: "",
+      userId: ""
     };
   },
   props: {
@@ -102,6 +106,7 @@ export default {
     },
     async courseList1(param) {
       let condition = {
+        userId: this.userId,
         currentPage: this.currentPage,
         pageSize: this.pageSize
       };
@@ -113,22 +118,27 @@ export default {
           }
         }
       }
-      console.log("======condition=====");
-      console.log(condition);
-      console.log("=====condition======");
 
       const response = await courseList(condition);
       let result = response.data;
       if (result.success) {
         if (result.entity.courseList != null) {
           return result.entity.courseList.map(item => {
+            // console.log("++++++++++");
+            // console.log(item.courseId);
+            // console.log(item.isFavorites);
+            // console.log(item.isFavorites > 0);
+            // console.log("++++++++++");
+
             return {
               courseId: item.courseId,
               courseName: item.courseName,
-              pageBuycount: item.pageBuycount,
+              pageViewcount: item.pageViewcount,
+              commentCount: item.commentCount || 0,
               logo: baseUrl + item.logo,
-              collectJudge: false, // TODO 收藏
-              collect: this.a
+              isFavorites: item.isFavorites,
+              collectJudge: item.isFavorites > 0,
+              collect: item.isFavorites > 0 ? this.b : this.a
             };
           });
         }
@@ -138,18 +148,29 @@ export default {
     showDetail(courseId) {
       this.$router.push("/detail/" + courseId);
     },
-    changeCollect(item) {
+    async changeCollect(item) {
       item.collectJudge = !item.collectJudge;
       if (item.collectJudge) {
+        // 调接口
+        let result = await collect({
+          userId: this.userId,
+          courseId: item.courseId
+        });
         // 收藏成功
         item.collect = this.b;
-        this.$toast("收藏成功");
-        // 调接口 TODO
+        if (result.data.success) {
+          this.$toast("收藏成功");
+        }
       } else {
         // 取消收藏
         item.collect = this.a;
         this.$toast("取消收藏");
+
         // 调接口 TODO
+        let result = await cancelCollect({ id: 31 });
+        console.log("++++取消++++++");
+        console.log(result);
+        console.log("++++取消++++++");
       }
     },
     async changeSub(subjectId) {

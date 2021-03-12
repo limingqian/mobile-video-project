@@ -30,11 +30,12 @@
           </div>
         </div>
         <!-- white-space:pre-line; 处理换行 -->
-        <div
+        <!-- <div
           style="text-align:left;margin:1rem 0.5rem 1rem 1rem;white-space:pre-line;width:84vw;"
-        >
-          {{ introduction.content }}
-        </div>
+        > -->
+        <div ref="contentInner"></div>
+        <!-- {{ introduction.content }}
+        </div> -->
         <div class="line"></div>
         <div class="teacher">
           <div class="buffer" style="text-align:left;font-size:1.2rem;">
@@ -46,7 +47,7 @@
               round
               width="4rem"
               height="4rem"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
+              :src="teacher.img"
             />
             <div class="text">
               <div style="font-size:1.2rem;">{{ teacher.name }}</div>
@@ -93,14 +94,9 @@
       <!-- 学过此课 -->
       <van-tab title="学过此课">
         <div class="people-container margin-bottom">
-          <div v-for="item in items" :key="item.id">
+          <div v-for="item in learnItems" :key="item.id">
             <div class="people-item">
-              <van-image
-                round
-                width="4rem"
-                height="4rem"
-                src="https://img01.yzcdn.cn/vant/cat.jpeg"
-              />
+              <van-image round width="4rem" height="4rem" :src="item.img" />
               {{ item.name }}
             </div>
           </div>
@@ -114,7 +110,8 @@
 import "video.js/dist/video-js.css";
 
 import { videoPlayer } from "vue-video-player";
-import { courseDetail } from "./../api/course";
+import { courseDetail, learnList } from "./../api/course";
+import { baseUrl } from "../utils";
 export default {
   name: "Detail",
   components: {
@@ -122,6 +119,7 @@ export default {
   },
   data() {
     return {
+      courseId: "",
       collectJudge: false, // TODO
       collect: require("@/assets/cancel.png"),
       active: 0,
@@ -132,6 +130,7 @@ export default {
       },
       teacher: {
         name: "李老师",
+        img: "",
         position: "首席虚拟现实讲师",
         introduction:
           "有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称"
@@ -150,6 +149,7 @@ export default {
           content: "hahahahahahhahaha"
         }
       ],
+      learnItems: [],
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
         autoplay: false, // 如果为true,浏览器准备好时开始回放。
@@ -184,9 +184,22 @@ export default {
   },
   async mounted() {
     await this.getVideo();
+    let learnArray = await learnList({ courseId: this.courseId });
+    learnArray = learnArray.data.entity;
+    learnArray.forEach(item => {
+      let name = item.userShowName;
+      if (item.userShowName.length > 5) {
+        name = item.userShowName.slice(0, 4) + "...";
+      }
+      this.learnItems.push({
+        name: name,
+        img: item.userImg || require("@/assets/head.jpeg")
+      });
+    });
   },
   methods: {
     async getVideo() {
+      this.courseId = this.$route.params.courseId;
       let resultTemp = await courseDetail({
         courseId: this.$route.params.courseId
       });
@@ -196,15 +209,23 @@ export default {
         this.introduction.title = entity.courseName;
         this.introduction.subTitle =
           entity.pageBuycount + "人学习 / " + entity.pageBuycount + " 评论";
-        entity.context = entity.context.replace(/<p>/g, "");
-        entity.context = entity.context.replace(/<\/p>/g, "");
-        entity.context = entity.context.replace(/<br \/>/g, "");
-
+        this.$refs.contentInner.innerHTML = entity.context; // 直接赋值 innerHTML
         this.introduction.content = entity.context;
+        // 讲师信息
+        this.teacher.img = baseUrl + entity.teacher.picPath;
+        this.teacher.name = entity.teacher.name;
+        this.teacher.position = entity.teacher.education;
+        this.teacher.introduction = entity.teacher.career;
+        // TODO 多个视频
+        console.log("++++++++++");
+        console.log(entity.kpointList[0].videoUrl);
+        console.log("++++++++++");
+        this.playerOptions.sources[0].src =
+          baseUrl + entity.kpointList[0].videoUrl;
       }
 
-      this.playerOptions.sources[0].src =
-        "https://www.runoob.com/try/demo_source/movie.mp4";
+      // this.playerOptions.sources[0].src =
+      //   "https://www.runoob.com/try/demo_source/movie.mp4";
     },
     onClickLeft() {
       // this.$router.push('/List');
@@ -284,6 +305,7 @@ export default {
 .people-container {
   display: flex;
   flex-wrap: wrap;
+  margin-left: 1rem;
 }
 .people-item {
   display: flex;

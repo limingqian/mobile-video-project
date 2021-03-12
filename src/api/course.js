@@ -51,3 +51,18 @@ export const myCourseList = async params => {
 
   return await axios(config);
 };
+
+// 学过此课的人接口
+export const learnList = async params => {
+  axios.defaults.baseURL = baseUrl;
+  axios.defaults.contentType = "application/x-www-form-urlencoded";
+  axios.defaults.headers.common["token"] = getToken;
+
+  const config = {
+    url: "/couserStudyHistory/ajax/courseLearnedUser/" + params.courseId,
+    method: "get"
+  };
+  axios.defaults.withCredentials = true;
+
+  return await axios(config);
+};
