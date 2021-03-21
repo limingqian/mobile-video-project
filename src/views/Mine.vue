@@ -34,7 +34,6 @@
         :src="require('@/assets/head.jpeg')"
       />
       <h3 class="sign">{{ userName }}</h3>
-      <!-- <h6 class="sign">{{ sign }}</h6> -->
     </div>
   </div>
 </template>

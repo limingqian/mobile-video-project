@@ -28,7 +28,7 @@
               </div>
               <div class="text">
                 <div>
-                  {{ item.pageBuycount }}人学习 / {{ item.pageBuycount }} 评论
+                  {{ item.pageBuycount }}人学习 / {{ item.commentCount }} 评论
                 </div>
               </div>
             </div>
@@ -62,7 +62,6 @@ export default {
       pageSize: 6,
       type: this.$route.params.type,
       selfValue: this.value,
-      size: "20.28M",
       a,
       b,
       items: [],
@@ -106,12 +105,14 @@ export default {
               courseId: item.courseId,
               courseName: item.courseName,
               pageBuycount: item.pageBuycount,
+              commentCount: item.commentCount,
               addTime: new Date(parseInt(item.addTime))
                 .toLocaleString()
                 .replace(/:\d{1,2}$/, " "),
               logo: baseUrl + item.logo,
-              collectJudge: false, // TODO 收藏
-              collect: this.a
+              collectJudge: true, // 收藏
+              collect: this.b,
+              favoritesId: item.favouriteId
             };
           });
         }
@@ -143,17 +144,19 @@ export default {
           courseId: item.courseId
         });
         // 收藏成功
+        item.collect = this.b;
+        item.favoritesId = result.data.entity.id;
         if (result.data.success) {
-          item.collect = this.b;
           this.$toast("收藏成功");
         }
-        // 不可能出现重复收藏的情况
       } else {
-        // 取消收藏 favouriteId TODO
-        let result = await cancelCollect({ id: 31 });
+        // 取消收藏
+        item.collect = this.a;
+        this.$toast("取消收藏");
+        // 调接口
+        let result = await cancelCollect({ id: item.favoritesId });
         if (result.data.success) {
-          item.collect = this.a;
-          this.$toast("取消收藏");
+          this.$toast("取消收藏成功");
         }
       }
     }

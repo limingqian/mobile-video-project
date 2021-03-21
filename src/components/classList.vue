@@ -124,12 +124,6 @@ export default {
       if (result.success) {
         if (result.entity.courseList != null) {
           return result.entity.courseList.map(item => {
-            // console.log("++++++++++");
-            // console.log(item.courseId);
-            // console.log(item.isFavorites);
-            // console.log(item.isFavorites > 0);
-            // console.log("++++++++++");
-
             return {
               courseId: item.courseId,
               courseName: item.courseName,
@@ -137,6 +131,7 @@ export default {
               commentCount: item.commentCount || 0,
               logo: baseUrl + item.logo,
               isFavorites: item.isFavorites,
+              favoritesId: item.favoritesId, // 用于取消收藏
               collectJudge: item.isFavorites > 0,
               collect: item.isFavorites > 0 ? this.b : this.a
             };
@@ -158,6 +153,7 @@ export default {
         });
         // 收藏成功
         item.collect = this.b;
+        item.favoritesId = result.data.entity.id;
         if (result.data.success) {
           this.$toast("收藏成功");
         }
@@ -166,18 +162,33 @@ export default {
         item.collect = this.a;
         this.$toast("取消收藏");
 
-        // 调接口 TODO
-        let result = await cancelCollect({ id: 31 });
-        console.log("++++取消++++++");
-        console.log(result);
-        console.log("++++取消++++++");
+        // 调接口
+        let result = await cancelCollect({ id: item.favoritesId });
+        if (result.data.success) {
+          this.$toast("取消收藏成功");
+        }
       }
     },
     async changeSub(subjectId) {
       if (!subjectId) {
         this.currentPage = 1;
       }
+      this.pageSize = this.currentPage * this.pageSize; // 分页加条件可能会有bug
+      this.currentPage = 1;
       this.subjectId = subjectId;
+      this.items = await this.courseList1({
+        subjectId: this.subjectId,
+        teacherId: this.teacherId,
+        courseName: this.courseName
+      });
+    },
+    async changeTeacher(teacherId) {
+      if (!teacherId) {
+        this.currentPage = 1;
+      }
+      this.pageSize = this.currentPage * this.pageSize; // 分页加条件可能会有bug
+      this.currentPage = 1;
+      this.teacherId = teacherId;
       this.items = await this.courseList1({
         subjectId: this.subjectId,
         teacherId: this.teacherId,
@@ -188,6 +199,8 @@ export default {
       if (!courseName) {
         this.currentPage = 1;
       }
+      this.pageSize = this.currentPage * this.pageSize; // 分页加条件可能会有bug
+      this.currentPage = 1;
       this.courseName = courseName;
       this.items = await this.courseList1({
         subjectId: this.subjectId,

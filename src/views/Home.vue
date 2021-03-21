@@ -1,10 +1,5 @@
 <template>
   <div class="home">
-    <!-- <van-image
-      width="100%"
-      height="100%"
-      :src="require('@/assets/first.mp4')"
-    /> -->
     <div class="main">
       <div class="container">
         <div class="big-text">打造虚幻世界</div>
@@ -31,55 +26,19 @@
         <source src="@/assets/first.mp4" />
       </video>
     </div>
-    <!-- <van-row style="margin-top:-2rem"> -->
-    <!-- <van-row style="">
-      <van-col offset="3" span="18" type="flex" justify="center"> -->
-    <!-- <van-search class="test" v-model="value" shape="round" placeholder="请输入搜索关键词" /> -->
-    <!-- style=" margin:-45px auto; width:20rem;" -->
-    <!-- <LmqSearch v-model="value" @search="doSearch" /> -->
-    <!-- </van-col>
-    </van-row> -->
-    <!-- <van-grid direction="horizontal" :column-num="2" style="margin-top:1rem;background-color: #f2f2f2;">
-        <van-grid-item icon="photo-o" text="在线课程" />
-        <van-grid-item icon="photo-o" text="热门课程" />
-      </van-grid> -->
-    <!-- <div class="menu">
-      <div class="item">
-        <van-image width="2.5rem" height="2.5rem" :src="require('@/assets/icon/search.png')" />
-        <div>在线课程</div>
-      </div>
-      <div class="item" @click="showHot()">
-        <van-image width="2.5rem" height="2.5rem" :src="require('@/assets/icon/search.png')" />
-        <div>热门课程</div>
-      </div>
-    </div> -->
     <!-- 热门课程列表 -->
     <LmqClassList :showMore="showMore" />
   </div>
 </template>
 
 <script>
-// import LmqSearch from '@/components/search.vue';
 import LmqClassList from "@/components/classList.vue";
-// import { courseList } from "./../api/course";
 
 export default {
   name: "Home",
   components: {
     LmqClassList
   },
-  // async mounted() {
-  //   // 请求接口
-  //   const response = await courseList({
-  //     currentPage: this.currentPage,
-  //     pageSize: this.pageSize
-  //   });
-  //   let result = response.data;
-  //   console.log("===========");
-  //   console.log(result);
-  //   // console.log(this.currentPage);
-  //   console.log("===========");
-  // },
   data() {
     return {
       value: "",

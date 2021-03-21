@@ -1,18 +1,14 @@
 <template>
   <div id="container">
     <div class="search bar">
-      <!-- <form action=""> -->
       <div class="font-big">搜索</div>
       <div class="shuxian"></div>
-      <!-- <input type="text" placeholder="请输入您要搜索的内容..." /> -->
       <van-search
         class="van-search"
         v-model="selfValue"
         @search="doSearch"
         placeholder="按课程名称搜索"
       />
-      <!-- <button type="submit"></button> -->
-      <!-- </form> -->
     </div>
   </div>
 </template>

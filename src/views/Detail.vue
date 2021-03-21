@@ -147,7 +147,8 @@ export default {
         }
       ],
       learnItems: [],
-      playerOptions: []
+      playerOptions: [],
+      flatArray: []
     };
   },
   computed: {
@@ -200,11 +201,22 @@ export default {
         }
       };
     },
+    traverseTree(item) {
+      // 视频是个树状结构，遍历
+      if (item.kpointType === 1) {
+        this.flatArray.push(item);
+      } else {
+        for (let i = 0; i < item.kpointList.length; i++) {
+          this.traverseTree(item.kpointList[i]);
+        }
+      }
+    },
     async getVideo() {
       this.courseId = this.$route.params.courseId;
       let resultTemp = await courseDetail({
         courseId: this.$route.params.courseId
       });
+
       let result = resultTemp.data;
       if (result.success) {
         let entity = result.entity;
@@ -218,21 +230,19 @@ export default {
         this.teacher.name = entity.teacher.name;
         this.teacher.position = entity.teacher.education;
         this.teacher.introduction = entity.teacher.career;
-        // TODO 多个视频
-        this.playerOptions.push(
-          this.creatObj(
-            baseUrl + entity.kpointList[0].videoUrl,
-            entity.kpointList[0].name,
-            1
-          )
-        );
-        this.playerOptions.push(
-          this.creatObj(
-            baseUrl + entity.kpointList[1].videoUrl,
-            entity.kpointList[1].name,
-            2
-          )
-        );
+        let kpointList = entity.kpointList;
+        for (let i = 0; i < kpointList.length; i++) {
+          this.traverseTree(kpointList[i]);
+        }
+        for (let i = 0; i < this.flatArray.length; i++) {
+          this.playerOptions.push(
+            this.creatObj(
+              baseUrl + this.flatArray[i].videoUrl,
+              this.flatArray[i].name,
+              this.flatArray[i].kpointId
+            )
+          );
+        }
       }
     },
     onClickLeft() {

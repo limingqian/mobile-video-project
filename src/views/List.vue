@@ -21,14 +21,13 @@
         @change="changeTeacher"
       />
     </van-dropdown-menu>
-    <LmqClassList ref="classList"/>
+    <LmqClassList ref="classList" />
   </div>
 </template>
 
 <script>
 import LmqClassList from "@/components/classList.vue";
-import { subjectList } from "./../api/condition";
-// teacherList
+import { subjectList, teacherList } from "./../api/condition";
 export default {
   name: "List",
   components: {
@@ -38,33 +37,16 @@ export default {
     return {
       value: "",
       value1: 0,
-      value2: "a",
+      value2: 0,
       option1: [{ text: "全部专业", value: 0 }],
-      option2: [
-        { text: "全部讲师", value: "a" },
-        { text: "李老师", value: "b" },
-        { text: "刘老师", value: "c" }
-      ],
-      items: [
-        { id: 1, name: "VR全景制作" },
-        { id: 2, name: "VR全景制作" },
-        { id: 3, name: "VR全景制作" },
-        { id: 4, name: "VR全景制作" },
-        { id: 5, name: "VR全景制作" },
-        { id: 6, name: "VR全景制作" },
-        { id: 7, name: "VR全景制作" },
-        { id: 8, name: "VR全景制作" },
-        { id: 9, name: "VR全景制作" }
-      ]
+      option2: [{ text: "全部讲师", value: 0 }]
     };
   },
   async mounted() {
     // 获取全部专业和讲师
     let resultTemp = await subjectList();
-    // let resultTemp1 = await teacherList();
-    // console.log("===========");
-    // console.log(resultTemp1);
-    // console.log("===========");
+    // 接口是分页的，感觉没必要
+    let resultTemp1 = await teacherList({ currentPage: 1, pageSize: 100 });
     let result = resultTemp.data;
     if (result.success) {
       let entity = result.entity;
@@ -72,6 +54,17 @@ export default {
         this.option1.push({
           value: temp.subjectId,
           text: temp.subjectName
+        });
+      });
+    }
+
+    let result1 = resultTemp1.data;
+    if (result1.success) {
+      let entity = result1.entity.teacherList;
+      entity.forEach(temp => {
+        this.option2.push({
+          value: temp.id,
+          text: temp.name
         });
       });
     }
@@ -83,9 +76,7 @@ export default {
     },
     changeTeacher(value) {
       // 改变classList
-      console.log("===========");
-      console.log(value);
-      console.log("===========");
+      this.$refs.classList.changeTeacher(value);
     },
     onSearch() {
       // 条件查询
