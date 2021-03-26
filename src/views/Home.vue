@@ -15,16 +15,23 @@
       </div>
       <!-- @/assets/first.mp4 -->
       <!-- 微信不支持，用poster替代 -->
-      <video
+      <!-- <video
         class="bg_video"
-        poster="@/assets/bizhi1.jpg"
+        poster="@/assets/vr.jpeg"
         playsinline
         autoplay
         loop
         muted
       >
         <source src="@/assets/first.mp4" />
-      </video>
+      </video> -->
+      <van-image
+        class="bg_video"
+        width="100%"
+        height="18rem"
+        fit="fill"
+        :src="background"
+      />
     </div>
     <!-- 热门课程列表 -->
     <LmqClassList :showMore="showMore" />
@@ -33,7 +40,7 @@
 
 <script>
 import LmqClassList from "@/components/classList.vue";
-
+import background from "../assets/background.gif";
 export default {
   name: "Home",
   components: {
@@ -45,7 +52,8 @@ export default {
       active: 0,
       showMore: true,
       currentPage: 1,
-      pageSize: 10
+      pageSize: 10,
+      background
     };
   },
   methods: {

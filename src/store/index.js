@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     isLogin: true,
     activeItem: 0,
-    userName: ""
+    userName: "",
+    showName: ""
   },
   mutations: {
     yes(state) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     userName(state, n) {
       state.userName = n;
+    },
+    showName(state, n) {
+      state.showName = n;
     }
   },
   actions: {},

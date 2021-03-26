@@ -21,7 +21,11 @@ export default {
   },
   computed: {
     isLogin() {
-      return this.$store.state.isLogin;
+      if (window.location.href.split("/").indexOf("login") > -1) {
+        return false;
+      }
+      // return this.$store.state.isLogin;
+      return true;
     },
     active: {
       get() {

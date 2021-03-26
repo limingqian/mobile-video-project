@@ -4,7 +4,7 @@
       width="100%"
       height="18rem"
       fit="fill"
-      :src="require('@/assets/vr.jpeg')"
+      :src="require('@/assets/vr2.jpg')"
     />
     <van-grid direction="horizontal" :column-num="2" style="margin-top:2rem;">
       <van-grid-item
@@ -25,7 +25,7 @@
 
     <!-- 个人信息 -->
     <div class="info">
-      <h5>我的</h5>
+      <h4 style="color:white">我的</h4>
       <van-image
         round
         width="6rem"
@@ -34,6 +34,7 @@
         :src="require('@/assets/head.jpeg')"
       />
       <h3 class="sign">{{ userName }}</h3>
+      <h3 class="sign">{{ showName }}</h3>
     </div>
   </div>
 </template>
@@ -53,6 +54,11 @@ export default {
     userName: {
       get() {
         return this.$store.state.userName;
+      }
+    },
+    showName: {
+      get() {
+        return this.$store.state.showName;
       }
     }
   },

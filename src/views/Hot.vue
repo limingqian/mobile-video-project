@@ -1,6 +1,6 @@
 <template>
   <div class="classList">
-    <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar title="" left-arrow @click-left="onClickLeft" />
     <div class="listItem">
       <div class="itemTitle">
         <span class="verticalLine"></span>
@@ -93,8 +93,10 @@ export default {
       let response = "";
       if (this.type === "mycourse") {
         response = await myCourseList(condition);
+        document.title = "我的课程";
       } else {
         response = await myCollection(condition);
+        document.title = "我的收藏";
       }
 
       let result = response.data;
@@ -174,9 +176,9 @@ export default {
   margin: 0 auto 1rem auto;
 }
 .more {
-  width: 40%;
+  width: 30%;
   color: white;
-  background-color: black;
+  background-color: #ff9571;
   margin-bottom: 3rem;
 }
 

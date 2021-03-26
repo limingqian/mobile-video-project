@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <!-- <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" /> -->
-    <van-nav-bar title="VR全景制作" />
+    <!-- <van-nav-bar title="" /> -->
     <van-search
       v-model="value"
       shape="round"

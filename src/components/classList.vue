@@ -144,6 +144,10 @@ export default {
       this.$router.push("/detail/" + courseId);
     },
     async changeCollect(item) {
+      if (!this.$store.state.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       item.collectJudge = !item.collectJudge;
       if (item.collectJudge) {
         // 调接口
@@ -222,9 +226,9 @@ export default {
   margin: 0 auto 1rem auto;
 }
 .more {
-  width: 40%;
+  width: 30%;
   color: white;
-  background-color: black;
+  background-color: #ff9571;
   margin-bottom: 3rem;
 }
 

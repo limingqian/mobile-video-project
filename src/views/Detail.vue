@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <van-nav-bar title="VR全景制作" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar title="" left-arrow @click-left="onClickLeft" />
     <van-tabs>
       <van-tab v-for="i in playerOptions" :title="i.name" :key="i.id">
         <video-player
@@ -250,6 +250,11 @@ export default {
     },
     // listen event
     onPlayerPlay(player) {
+      if (!this.$store.state.isLogin) {
+        this.$toast("请先登录");
+        this.$router.push("/login");
+        return;
+      }
       console.log("player play!", player);
     },
     onPlayerPause(player) {

@@ -69,6 +69,7 @@ export default {
         this.$store.commit("yes");
         this.$store.commit("changeActive", 0);
         this.$store.commit("userName", result.entity.userName);
+        this.$store.commit("showName", result.entity.showName);
         this.$router.push("/");
       }
     }
