@@ -288,18 +288,12 @@ export default {
       }
     },
     readPPT(item) {
-      // 测试用
       let url =
         "https://view.officeapps.live.com/op/view.aspx?src=" +
-        "http://edu.ophyer.com/inxedu" +
         item.sources[0].src;
 
-      console.log("++++++++++");
-      console.log(item.sources[0].src);
-      console.log(url);
-      console.log("++++++++++");
-      window.open(url.replace("/api", ""));
-      // window.open(url);
+      // window.open(url.replace("/api", ""));
+      window.open(url);
     }
   }
 };

@@ -26,7 +26,8 @@ module.exports = {
       // 解决本地开发调用远程接口的跨域问题
       "/api": {
         // target: "http://jinran.jisoft.net/inxedu",
-        target: "http://edu.ophyer.com/inxedu",
+        // target: "http://edu.ophyer.com/inxedu",
+        target: "http://pingtai.jr-vr.com/inxedu",
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
