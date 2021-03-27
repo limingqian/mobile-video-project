@@ -28,7 +28,7 @@
               </div>
               <div class="text">
                 <div>
-                  {{ item.pageBuycount }}人学习 / {{ item.commentCount }} 评论
+                  {{ item.studyCount }}人学习 / {{ item.commentCount }} 评论
                 </div>
               </div>
             </div>
@@ -114,7 +114,8 @@ export default {
               logo: baseUrl + item.logo,
               collectJudge: true, // 收藏
               collect: this.b,
-              favoritesId: item.favouriteId
+              favouriteId: item.favouriteId,
+              studyCount: item.studyCount || 0
             };
           });
         }
@@ -147,7 +148,7 @@ export default {
         });
         // 收藏成功
         item.collect = this.b;
-        item.favoritesId = result.data.entity.id;
+        item.favouriteId = result.data.entity.id;
         if (result.data.success) {
           this.$toast("收藏成功");
         }
@@ -156,7 +157,7 @@ export default {
         item.collect = this.a;
         this.$toast("取消收藏");
         // 调接口
-        let result = await cancelCollect({ id: item.favoritesId });
+        let result = await cancelCollect({ id: item.favouriteId });
         if (result.data.success) {
           this.$toast("取消收藏成功");
         }

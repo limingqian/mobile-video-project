@@ -66,3 +66,20 @@ export const learnList = async params => {
 
   return await axios(config);
 };
+
+// 课程评论接口
+export const couComment = async params => {
+  axios.defaults.baseURL = baseUrl;
+  axios.defaults.contentType = "application/x-www-form-urlencoded";
+  axios.defaults.headers.common["token"] = getToken;
+
+  const config = {
+    url: "/webapp/front/couComment",
+    method: "post",
+    data: params, // 直接传递参数
+    transformRequest: change // 转换为 form-data
+  };
+  axios.defaults.withCredentials = true;
+
+  return await axios(config);
+};

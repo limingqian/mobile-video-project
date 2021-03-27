@@ -75,7 +75,7 @@
                 round
                 width="4rem"
                 height="4rem"
-                src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                :src="item.img"
               />
               <div class="comment-text">
                 <div style="text-align:left;margin-top:1rem;">
@@ -115,18 +115,24 @@
 import "video.js/dist/video-js.css";
 
 import { videoPlayer } from "vue-video-player";
-import { courseDetail, learnList } from "./../api/course";
+import { courseDetail, learnList, couComment } from "./../api/course";
 import { baseUrl } from "../utils";
+import storage from "../utils/storage";
+import { collect, cancelCollect } from "../api/collect";
 export default {
   name: "Detail",
   components: {
     videoPlayer
   },
   data() {
+    let a = require("@/assets/cancel.png");
+    let b = require("@/assets/collect.png");
     return {
+      a,
+      b,
       courseId: "",
-      collectJudge: false, // TODO
-      collect: require("@/assets/cancel.png"),
+      collectJudge: false,
+      collect: a,
       active: 0,
       introduction: {
         title: "",
@@ -139,23 +145,11 @@ export default {
         position: "",
         introduction: ""
       },
-      items: [
-        {
-          id: 2,
-          name: "小王2",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        },
-        {
-          id: 3,
-          name: "小王3",
-          time: "2020-02-01",
-          content: "hahahahahahhahaha"
-        }
-      ],
+      items: [],
       learnItems: [],
       playerOptions: [],
-      flatArray: []
+      flatArray: [],
+      userId: ""
     };
   },
   computed: {
@@ -164,7 +158,9 @@ export default {
     }
   },
   async mounted() {
+    this.userId = storage.get("userId");
     await this.getVideo();
+    // 获取学过此课的人
     let learnArray = await learnList({ courseId: this.courseId });
     learnArray = learnArray.data.entity;
     learnArray.forEach(item => {
@@ -175,6 +171,24 @@ export default {
       this.learnItems.push({
         name: name,
         img: item.userImg || require("@/assets/head.jpeg")
+      });
+    });
+    // 获取评论列表 currentPage pageSize
+    let tempItems = await couComment({
+      courseId: this.courseId,
+      currentPage: 1,
+      pageSize: 200
+    });
+    let id = 0;
+    tempItems.data.entity.commentList.forEach(item => {
+      this.items.push({
+        id: ++id,
+        name: item.userName,
+        time: new Date(parseInt(item.addTime))
+          .toLocaleString()
+          .replace(/:\d{1,2}$/, " "),
+        content: item.content,
+        img: item.picImg || require("@/assets/head.jpeg")
       });
     });
   },
@@ -222,22 +236,36 @@ export default {
     async getVideo() {
       this.courseId = this.$route.params.courseId;
       let resultTemp = await courseDetail({
-        courseId: this.$route.params.courseId
+        courseId: this.$route.params.courseId,
+        userId: this.userId
       });
 
       let result = resultTemp.data;
       if (result.success) {
         let entity = result.entity;
+        this.favoritesId = entity.fid;
+        if (entity.fid > 0) {
+          this.collectJudge = true;
+          this.collect = this.b;
+        } else {
+          this.collectJudge = false;
+          this.collect = this.a;
+        }
+
         this.introduction.title = entity.courseName;
         this.introduction.subTitle =
           entity.pageBuycount + "人学习 / " + entity.pageBuycount + " 评论";
         this.$refs.contentInner.innerHTML = entity.context; // 直接赋值 innerHTML
         this.introduction.content = entity.context;
         // 讲师信息
-        this.teacher.img = baseUrl + entity.teacher.picPath;
-        this.teacher.name = entity.teacher.name;
-        this.teacher.position = entity.teacher.education;
-        this.teacher.introduction = entity.teacher.career;
+
+        if (entity.teacher) {
+          this.teacher.img = baseUrl + entity.teacher.picPath;
+          this.teacher.name = entity.teacher.name;
+          this.teacher.position = entity.teacher.education;
+          this.teacher.introduction = entity.teacher.career;
+        }
+
         let kpointList = entity.kpointList;
         // 遍历 结果放到this.flatArray里
         for (let i = 0; i < kpointList.length; i++) {
@@ -273,18 +301,35 @@ export default {
     onPlayerEnded(player) {
       console.log(player);
     },
-    changeCollect() {
+    async changeCollect() {
+      if (!this.$store.state.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.collectJudge = !this.collectJudge;
       if (this.collectJudge) {
         // 收藏成功
-        this.collect = require("@/assets/collect.png");
+        this.collect = this.b;
         this.$toast("收藏成功");
-        // 调接口 TODO
+        let result = await collect({
+          userId: this.userId,
+          courseId: this.courseId
+        });
+        // 收藏成功
+        this.collect = this.b;
+        this.favoritesId = result.data.entity.id;
+        if (result.data.success) {
+          this.$toast("收藏成功");
+        }
       } else {
         // 取消收藏
-        this.collect = require("@/assets/cancel.png");
+        this.collect = this.a;
         this.$toast("取消收藏");
-        // 调接口 TODO
+        // 调接口
+        let result = await cancelCollect({ id: this.favoritesId });
+        if (result.data.success) {
+          this.$toast("取消收藏成功");
+        }
       }
     },
     readPPT(item) {
