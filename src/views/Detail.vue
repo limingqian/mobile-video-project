@@ -4,6 +4,7 @@
     <van-tabs>
       <van-tab v-for="i in playerOptions" :title="i.name" :key="i.id">
         <video-player
+          v-if="i.fileType === 'VIDEO'"
           class="video-player vjs-custom-skin"
           ref="videoPlayer"
           :playsinline="true"
@@ -13,6 +14,12 @@
           @ended="onPlayerEnded($event)"
         >
         </video-player>
+        <van-button
+          class="more"
+          v-if="i.fileType != 'VIDEO'"
+          @click="readPPT(i)"
+          >查看文档</van-button
+        >
       </van-tab>
     </van-tabs>
     <van-tabs v-model="active">
@@ -172,8 +179,9 @@ export default {
     });
   },
   methods: {
-    creatObj(url, name, id) {
+    creatObj(url, name, id, fileType) {
       return {
+        fileType,
         id,
         name,
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
@@ -188,7 +196,7 @@ export default {
         sources: [
           {
             type: "video/mp4", // 类型
-            src: url // url地址
+            src: baseUrl + url // url地址
           }
         ],
         poster: "", // 封面地址
@@ -231,15 +239,17 @@ export default {
         this.teacher.position = entity.teacher.education;
         this.teacher.introduction = entity.teacher.career;
         let kpointList = entity.kpointList;
+        // 遍历 结果放到this.flatArray里
         for (let i = 0; i < kpointList.length; i++) {
           this.traverseTree(kpointList[i]);
         }
         for (let i = 0; i < this.flatArray.length; i++) {
           this.playerOptions.push(
             this.creatObj(
-              baseUrl + this.flatArray[i].videoUrl,
+              this.flatArray[i].videoUrl,
               this.flatArray[i].name,
-              this.flatArray[i].kpointId
+              this.flatArray[i].kpointId,
+              this.flatArray[i].fileType
             )
           );
         }
@@ -276,6 +286,20 @@ export default {
         this.$toast("取消收藏");
         // 调接口 TODO
       }
+    },
+    readPPT(item) {
+      // 测试用
+      let url =
+        "https://view.officeapps.live.com/op/view.aspx?src=" +
+        "http://edu.ophyer.com/inxedu" +
+        item.sources[0].src;
+
+      console.log("++++++++++");
+      console.log(item.sources[0].src);
+      console.log(url);
+      console.log("++++++++++");
+      window.open(url.replace("/api", ""));
+      // window.open(url);
     }
   }
 };
@@ -333,5 +357,12 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 1rem 0.5rem;
+}
+.more {
+  width: 30%;
+  color: white;
+  background-color: #ff9571;
+  /* margin-bottom: 3rem; */
+  margin: 1rem auto 1rem auto;
 }
 </style>
